@@ -80,5 +80,25 @@ int main(void){
                               {{'1', '1', '0'},  {'1', '0', '1'}, {'0', '1', '1'}, {'0', '0', '0'}, {'1', 'D', 'E'}, {'D', '1', 'E'}, {'1', '1', 'E'}, {'0', '0', 'E'}, {'0', '1', 'D'}, {'1', '0', 'D'}, {'0', 'D', 'D'}, {'D', '0', 'D'}, {'E', '1', 'D'}, {'1', 'E', 'D'}, {'0', 'E', 'E'}, {'E', '0', 'E'}}, 
                               {{'1', '1', '1'},  {'1', '0', '0'}, {'0', '1', '0'}, {'0', '0', '1'}, {'1', 'D', 'D'}, {'D', '1', 'D'}, {'1', '1', 'D'}, {'0', '0', 'D'}, {'0', '1', 'E'}, {'1', '0', 'E'}, {'0', 'D', 'E'}, {'D', '0', 'E'}, {'E', '1', 'E'}, {'1', 'E', 'E'}, {'0', 'E', 'D'}, {'E', '0', 'D'}} 
                              };
+    int fwire;
+    char f_states[2] = {'D', 'E'};
+    rep(i, 0, 2)
+    {   
+        int j;
+        rep(j, 0, n_edge)
+        {
+            cout << "Considering s-a-" << i << " for wire " << j << endl;
+            fwire = j;
+            char f_state = f_states[i];
+
+            vector<vector<char>> test_cube;
+            vector<char> temp;
+            rep(k, 0, n_edge)
+                temp.pb('x');
+            test_cube.pb(temp);
+            test_cube.pb(test_cube[0]);
+        }
+    }
+
     return 0;
 }
