@@ -1,0 +1,89 @@
+Enter the number of nodes (Branching points, gates, inputs, outputs): 
+Enter the number of edges (Wires): 
+Enter first connection in netlist format (node1 node2 wirenum): 
+Enter first connection in netlist format (node1 node2 wirenum): 
+Enter first connection in netlist format (node1 node2 wirenum): 
+Enter first connection in netlist format (node1 node2 wirenum): 
+Enter first connection in netlist format (node1 node2 wirenum): 
+Enter first connection in netlist format (node1 node2 wirenum): 
+Enter first connection in netlist format (node1 node2 wirenum): 
+Enter the type of node for node0:
+ 0: input/output
+ 1: branching point
+ 2: AND
+ 3: OR
+ 4:NAND
+ 5:NOR
+ 6:XOR
+Enter the type of node for node1:
+ 0: input/output
+ 1: branching point
+ 2: AND
+ 3: OR
+ 4:NAND
+ 5:NOR
+ 6:XOR
+Enter the type of node for node2:
+ 0: input/output
+ 1: branching point
+ 2: AND
+ 3: OR
+ 4:NAND
+ 5:NOR
+ 6:XOR
+Enter the type of node for node3:
+ 0: input/output
+ 1: branching point
+ 2: AND
+ 3: OR
+ 4:NAND
+ 5:NOR
+ 6:XOR
+Enter the type of node for node4:
+ 0: input/output
+ 1: branching point
+ 2: AND
+ 3: OR
+ 4:NAND
+ 5:NOR
+ 6:XOR
+Enter the type of node for node5:
+ 0: input/output
+ 1: branching point
+ 2: AND
+ 3: OR
+ 4:NAND
+ 5:NOR
+ 6:XOR
+Enter the type of node for node6:
+ 0: input/output
+ 1: branching point
+ 2: AND
+ 3: OR
+ 4:NAND
+ 5:NOR
+ 6:XOR
+Enter the type of node for node7:
+ 0: input/output
+ 1: branching point
+ 2: AND
+ 3: OR
+ 4:NAND
+ 5:NOR
+ 6:XOR
+0 -> 4 50 ;
+1 -> 4 51 ;
+2 -> 5 52 ;
+3 -> 5 53 ;
+4 -> 6 54 ;
+5 -> 6 55 ;
+6 -> 7 56 ;
+7 -> 
+Node 0 is of type 0
+Node 1 is of type 0
+Node 2 is of type 0
+Node 3 is of type 0
+Node 4 is of type 6
+Node 5 is of type 6
+Node 6 is of type 2
+Node 7 is of type 0
