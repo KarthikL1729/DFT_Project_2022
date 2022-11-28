@@ -129,9 +129,53 @@ vector<pi> jFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
     return front;
 }
 
+vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, int prop_dc[7][12][3], int wire_sur[][6])
+{
+    
+}
+
 vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, char prop_dc[7][12][3], int wire_sur[][6], vii branch_sur)
 {
     vector<pi> dFront = dFrontier(tc, nodetype, wire_sur);
+    bool flag = 0;
+    if(dFront.empty())                  //No d frontier
+    {
+        rep(i, tc[tc.size() - 1].size() - nout, tc[tc.size() - 1].size())       //Check outputs if fault detected
+        {
+            if(tc[tc.size() - 1][i] == 'D' || tc[tc.size() - 1][i] == 'E')
+            {
+                flag = 1;               //Error detected
+                return tc[tc.size() - 1];
+            }
+        }
+        return {'0'};                   //Error not detected
+    }       
+
+    // if d frontier not empty
+    vector<vector<char>> tc_new;
+    tc_new.pb(tc[tc.size() - 1]);
+    for(auto x = dFront.begin(); x != dFront.end(); dFront++)
+    {
+        // Iterate through the dFrontiers, save pdc
+        vector<vector<char>> pdc_new;
+        int gate = x->first;
+        int wire = x->second;
+        rep(i, 8, 12)           //Fault at input dcubes, d drive
+            if(prop_dc[nodetype[gate]][i][0] == tc_new[tc_new.size()-1][wire]) //Checking if input matches wire val
+                pdc_new.pb({prop_dc[nodetype[gate]][i][0], prop_dc[nodetype[gate]][i][1], prop_dc[nodetype[gate]][i][2]}); //Add to pdc_new
+        
+        while(!pdc_new.empty())                     //As long as we have d frontiers in the pdc
+        {
+            tc_new[tc_new.size() - 1][wire] = pdc_new[pdc_new.size() - 1][0];     //Set the wires to the value of the d frontier from pdc set
+            tc_new[tc_new.size() - 1][wire_sur[wire][1]] = pdc_new[pdc_new.size() - 1][1]; 
+            tc_new[tc_new.size() - 1][wire_sur[wire][0]] = pdc_new[pdc_new.size() - 1][2];
+            pdc_new.pop_back();             //Next d frontier
+
+            // Need to justify based on set values
+            // Calling justify
+            vector<char> jst = justifyFront(tc_new, nodetype, prop_dc, wire_sur);
+        }
+    }
 }
 
 
