@@ -1,13 +1,7 @@
 Enter the number of nodes (Branching points, gates, inputs, outputs): 
 Enter the number of edges (Wires): 
-Enter first connection in netlist format (node1 node2 wirenum): 
-Enter first connection in netlist format (node1 node2 wirenum): 
-Enter first connection in netlist format (node1 node2 wirenum): 
-Enter first connection in netlist format (node1 node2 wirenum): 
-Enter first connection in netlist format (node1 node2 wirenum): 
-Enter first connection in netlist format (node1 node2 wirenum): 
-Enter first connection in netlist format (node1 node2 wirenum): 
-Enter the type of node for node0:
+Enter connections in netlist format (node1 node2 wirenum): 
+Enter the type of node: 
  -2: output
  -1: input
  0: branching point
@@ -16,70 +10,9 @@ Enter the type of node for node0:
  3:NAND
  4:NOR
  5:XOR
- 6:XNOREnter the type of node for node1:
- -2: output
- -1: input
- 0: branching point
- 1: AND
- 2: OR
- 3:NAND
- 4:NOR
- 5:XOR
- 6:XNOREnter the type of node for node2:
- -2: output
- -1: input
- 0: branching point
- 1: AND
- 2: OR
- 3:NAND
- 4:NOR
- 5:XOR
- 6:XNOREnter the type of node for node3:
- -2: output
- -1: input
- 0: branching point
- 1: AND
- 2: OR
- 3:NAND
- 4:NOR
- 5:XOR
- 6:XNOREnter the type of node for node4:
- -2: output
- -1: input
- 0: branching point
- 1: AND
- 2: OR
- 3:NAND
- 4:NOR
- 5:XOR
- 6:XNOREnter the type of node for node5:
- -2: output
- -1: input
- 0: branching point
- 1: AND
- 2: OR
- 3:NAND
- 4:NOR
- 5:XOR
- 6:XNOREnter the type of node for node6:
- -2: output
- -1: input
- 0: branching point
- 1: AND
- 2: OR
- 3:NAND
- 4:NOR
- 5:XOR
- 6:XNOREnter the type of node for node7:
- -2: output
- -1: input
- 0: branching point
- 1: AND
- 2: OR
- 3:NAND
- 4:NOR
- 5:XOR
- 6:XNOR0 -> 4 50 ;
+ 6:XNOR
+ 7: NOT
+0 -> 4 50 ;
 1 -> 4 51 ;
 2 -> 5 52 ;
 3 -> 5 53 ;
@@ -98,56 +31,56 @@ Node 7 is of type -2
 Considering s-a-0 for wire 50
 Test Complete
 Test Vector: 1 1 0 1 
-Path (Format: Edge-[Node]): 50-[4]54-[6]56-[7]
+Path (Format: Edge-[Node]): 50-[4]-54-[6]-56-[7]-
 Considering s-a-0 for wire 51
 Test Complete
 Test Vector: 1 1 0 1 
-Path (Format: Edge-[Node]): 51-[4]54-[6]56-[7]
+Path (Format: Edge-[Node]): 51-[4]-54-[6]-56-[7]-
 Considering s-a-0 for wire 52
 Test Complete
 Test Vector: 0 1 1 1 
-Path (Format: Edge-[Node]): 52-[5]55-[6]56-[7]
+Path (Format: Edge-[Node]): 52-[5]-55-[6]-56-[7]-
 Considering s-a-0 for wire 53
 Test Complete
 Test Vector: 0 1 1 1 
-Path (Format: Edge-[Node]): 53-[5]55-[6]56-[7]
+Path (Format: Edge-[Node]): 53-[5]-55-[6]-56-[7]-
 Considering s-a-0 for wire 54
 Test Complete
 Test Vector: 1 0 0 1 
-Path (Format: Edge-[Node]): 54-[6]56-[7]
+Path (Format: Edge-[Node]): 54-[6]-56-[7]-
 Considering s-a-0 for wire 55
 Test Complete
 Test Vector: 0 1 1 0 
-Path (Format: Edge-[Node]): 55-[6]56-[7]
+Path (Format: Edge-[Node]): 55-[6]-56-[7]-
 Considering s-a-0 for wire 56
 Test Complete
 Test Vector: x x x x 
-Path (Format: Edge-[Node]): 56-[7]
+Path (Format: Edge-[Node]): 56-[7]-
 Considering s-a-1 for wire 50
 Test Complete
 Test Vector: 0 1 0 1 
-Path (Format: Edge-[Node]): 50-[4]54-[6]56-[7]
+Path (Format: Edge-[Node]): 50-[4]-54-[6]-56-[7]-
 Considering s-a-1 for wire 51
 Test Complete
 Test Vector: 1 0 0 1 
-Path (Format: Edge-[Node]): 51-[4]54-[6]56-[7]
+Path (Format: Edge-[Node]): 51-[4]-54-[6]-56-[7]-
 Considering s-a-1 for wire 52
 Test Complete
 Test Vector: 0 1 0 1 
-Path (Format: Edge-[Node]): 52-[5]55-[6]56-[7]
+Path (Format: Edge-[Node]): 52-[5]-55-[6]-56-[7]-
 Considering s-a-1 for wire 53
 Test Complete
 Test Vector: 0 1 1 0 
-Path (Format: Edge-[Node]): 53-[5]55-[6]56-[7]
+Path (Format: Edge-[Node]): 53-[5]-55-[6]-56-[7]-
 Considering s-a-1 for wire 54
 Test Complete
 Test Vector: 1 1 0 1 
-Path (Format: Edge-[Node]): 54-[6]56-[7]
+Path (Format: Edge-[Node]): 54-[6]-56-[7]-
 Considering s-a-1 for wire 55
 Test Complete
 Test Vector: 0 1 1 1 
-Path (Format: Edge-[Node]): 55-[6]56-[7]
+Path (Format: Edge-[Node]): 55-[6]-56-[7]-
 Considering s-a-1 for wire 56
 Test Complete
 Test Vector: x x x x 
-Path (Format: Edge-[Node]): 56-[7]
+Path (Format: Edge-[Node]): 56-[7]-
