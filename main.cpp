@@ -49,7 +49,7 @@ vi getbranch_sur(vector<pi> adj[], int n_node, int node_name, int node_front)
 {
     vi branchsur;
     branchsur.pb(node_name);
-    for(auto x = adj[u].begin(); adj[u].end(); x++)
+    for(auto x = adj[node_name].begin(); x != adj[node_name].end(); x++)
     {
         int v = x->first;
         int w = x->second;
@@ -90,7 +90,7 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
             {
                 pi = 0;
                 def_wiresur[in] = w-50;
-                if(nodetype[def_wiresur[0]] == 1)
+                if(nodetype[def_wiresur[0]] == 0)
                     def_wiresur[3] = def_wiresur[2];
                 else
                     in++;
@@ -111,6 +111,85 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
     }
     //If none of these work, default value is -1 anyway. 
 }
+
+vector<pi> dFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
+{
+    vector<pi> front;
+}
+
+vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, char prop_dc[7][12][3], int wire_sur[][6], vii branch_sur)
+{
+    vector<pi> dFront = dFrontier(tc, nodetype, wire_sur);
+}
+
+
+vector<char> D_algorithm(vector<vector<char> > test_cube, int nout, vi node_type, char prop_dc[7][12][3], int wire_sur[][6], vii branch_sur){
+
+    // Obtain D Frontier
+    vi b_data;          // Branch data for fault_net
+    char assgn;         // Assignment for branches from fault_net
+    bool branch=0;       // Branch flag  
+
+    rep(i, 0, test_cube[test_cube.size()-1].size()){
+        if(test_cube[test_cube.size()-1][i] == 'D' || test_cube[test_cube.size()-1][i] == 'E' ){
+            if(node_type[wire_sur[i][0]] == 0){
+                rep(j, 0, branch_sur[i].size()){
+                    int x_flag = 1;
+                    rep(k, 1, b_data.size()){
+                        if(test_cube[test_cube.size()-1][b_data[k]]!= 'x'){
+                            x_flag = 0;
+                            break;
+                        }
+                    }
+                    if(x_flag==1){
+                        branch = 1;
+                        b_data = branch_sur[j];
+                        assgn = test_cube[test_cube.size()-1][b_data[0]];
+                        if(! b_data.empty()){
+                            b_data.erase(b_data.begin());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    vector<char> out_tc;
+
+    if(branch){
+        bool flag2 = 0;
+        while(!b_data.empty()){
+            test_cube.pb(test_cube[test_cube.size()-1]);
+            test_cube[test_cube.size()-1][b_data[b_data.size()-1]] = assgn;
+            b_data.pop_back();
+
+            out_tc = D_algorithm_branch(test_cube, nout, node_type, prop_dc, wire_sur, branch_sur);
+
+            if(out_tc.size() != 0){
+                test_cube.pb(out_tc);
+                flag2 = 1;
+                return test_cube[test_cube.size()-1];
+            }
+            else{
+                test_cube.pop_back();
+            }
+        }
+    }
+
+    else{
+
+        out_tc = D_algorithm_branch(test_cube, nout, node_type, prop_dc, wire_sur, branch_sur);
+        if(out_tc.size() == 1){
+            return {'0'};
+        }
+        else{
+            test_cube.pb(out_tc);
+            return out_tc;
+        }
+    }
+
+    return {'0'};
+}  
 
 int main(void){
     file_read
@@ -142,11 +221,11 @@ int main(void){
         cout << "Node " << i << " is of type " << nodetype[i] << endl;
     }
     char prop_dc[7][12][3] = {
-                                {{'0','0','0'},{'1','1','1'},{'N','N','N'},{'N','N','N'},{'0','0','E'},{'1','1','D'},{'N','N','N'},{'N','N','N'},{'D','D','D'},{'E','E','E'},{'N','N','N'},{'N','N','N'}},          // branch
-                                {{'0','x','0'},{'x','0','0'},{'1','1','1'},{'N','N','N'},{'1','1','D'},{'0','x','E'},{'x','0','E'},{'N','N','N'},{'E','1','E'},{'D','1','D'},{'N','N','N'},{'N','N','N'}},          // and
-                                {{'0','0','0'},{'x','1','1'},{'1','x','1'},{'N','N','N'},{'0','0','E'},{'x','1','D'},{'1','x','D'},{'N','N','N'},{'E','0','E'},{'D','0','D'},{'N','N','N'},{'N','N','N'}},          // or
-                                {{'0','x','1'},{'x','0','1'},{'1','1','0'},{'N','N','N'},{'1','1','E'},{'0','x','D'},{'x','0','D'},{'N','N','N'},{'E','1','D'},{'D','1','E'},{'N','N','N'},{'N','N','N'}},          // nand
-                                {{'0','0','1'},{'x','1','0'},{'1','x','0'},{'N','N','N'},{'0','0','D'},{'x','1','E'},{'1','x','E'},{'N','N','N'},{'E','0','D'},{'D','0','E'},{'N','N','N'},{'N','N','N'}},          // nor
+                                {{'0','0','0'},{'1','1','1'},{'x','x','x'},{'x','x','x'},{'0','0','E'},{'1','1','D'},{'x','x','x'},{'x','x','x'},{'D','D','D'},{'E','E','E'},{'x','x','x'},{'x','x','x'}},          // branch
+                                {{'0','x','0'},{'x','0','0'},{'1','1','1'},{'x','x','x'},{'1','1','D'},{'0','x','E'},{'x','0','E'},{'x','x','x'},{'E','1','E'},{'D','1','D'},{'x','x','x'},{'x','x','x'}},          // and
+                                {{'0','0','0'},{'x','1','1'},{'1','x','1'},{'x','x','x'},{'0','0','E'},{'x','1','D'},{'1','x','D'},{'x','x','x'},{'E','0','E'},{'D','0','D'},{'x','x','x'},{'x','x','x'}},          // or
+                                {{'0','x','1'},{'x','0','1'},{'1','1','0'},{'x','x','x'},{'1','1','E'},{'0','x','D'},{'x','0','D'},{'x','x','x'},{'E','1','D'},{'D','1','E'},{'x','x','x'},{'x','x','x'}},          // nand
+                                {{'0','0','1'},{'x','1','0'},{'1','x','0'},{'x','x','x'},{'0','0','D'},{'x','1','E'},{'1','x','E'},{'x','x','x'},{'E','0','D'},{'D','0','E'},{'x','x','x'},{'x','x','x'}},          // nor
                                 {{'0','0','0'},{'0','1','1'},{'1','0','1'},{'1','1','0'},{'0','1','D'},{'1','0','D'},{'0','0','E'},{'1','1','E'},{'E','0','E'},{'D','0','D'},{'D','1','E'},{'E','1','D'}},          // xor
                                 {{'0','0','1'},{'0','1','0'},{'1','0','0'},{'1','1','1'},{'0','0','D'},{'1','1','D'},{'0','1','E'},{'1','0','E'},{'E','0','D'},{'D','0','E'},{'D','1','D'},{'E','1','E'}}           //xnor
                              }; // 0 to 3 are no errors, 4 to 7 are error at output, 8 to 11 are error at input AND output
@@ -188,7 +267,46 @@ int main(void){
             test_cube[test_cube.size()-1][fwire] = f_state; // Updating next state with fault from xxxxxx
             test_cube.pb(test_cube[test_cube.size() - 1]);  // New copy
             
-            
+            // D Algorithm starts here
+            int nout, nin;
+            rep(k, 0, n_node)
+            {
+                if (nodetype[k] == -1)
+                    nout++;
+                if (nodetype[k] == -2)
+                    nin++;
+            }
+
+            vector<char> out_states(n_edge);
+            out_states = D_algorithm(test_cube, nout, nodetype, prop_dc, wire_sur, branch_sur);
+            if(out_states.size()==1){
+                cout<<"Fault Untestable"<<endl;
+            }
+            else{
+                test_cube[test_cube.size()-1] = out_states;
+                cout<< "Test Complete" << endl;
+                cout<< "Test Vector: ";
+                rep(i, 0, nin){
+
+                    if(test_cube[test_cube.size()-1][i] == 'D')
+                        cout<<"1 ";
+                    else if(test_cube[test_cube.size()-1][i] == 'E')
+                        cout<<"0 ";
+                    else
+                        cout<<test_cube[test_cube.size()-1][i]<<" ";
+                }
+            }
+            cout<<endl;
+
+            cout<<"Path (Format: Edge-[Node]): ";
+            rep(i,0,test_cube[test_cube.size()-1].size()){
+                if(test_cube[test_cube.size()-1][i] == 'D')
+                    cout<<i+50<<"-["<<wire_sur[i][1]<<"]";
+                else if(test_cube[test_cube.size()-1][i] == 'E')
+                    cout<<i+50<<"-["<<wire_sur[i][1]<<"]";
+            }
+
+            cout<<endl;
 
         }
     }
