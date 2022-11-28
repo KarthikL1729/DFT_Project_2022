@@ -17,13 +17,6 @@ typedef vector<vi> vii;
 #define rep(i, a, n) for (ll i = a; i < n; ++i)
 #define brep(i, a, n) for (ll i = n - 1; i >= a; --i)
  
-bool sortbysec(const pair<int, int> &a,
-        const pair<int, int> &b)
-{
-    return a.second < b.second;
-}
-
-
 int def_wiresur[6] = {-1, -1, -1, -1, -1, -1};
 void addWire(vector<pi> wire[], int u, int v, int w_name)
 {
@@ -115,6 +108,25 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
 vector<pi> dFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
 {
     vector<pi> front;
+    rep(i, 0, tc[tc.size() - 1].size())
+    {
+        if(tc[tc.size() - 1][i] == 'D' || tc[tc.size() - 1][i] == 'E')      //if fault
+            if((wire_sur[i][4] != -1 || wire_sur[i][5] != -1) && (tc[tc.size() - 1][wire_sur[i][4]] == 'x' || tc[tc.size() - 1][wire_sur[i][5]] == 'x'))              //if not PO and has x (is a d frontier)
+                front.pb(mp(wire_sur[i][1], i));        // Gate on the right is a D frontier then, add to list
+    }
+    return front;
+}
+
+vector<pi> jFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
+{
+    vector<pi> front;
+    rep(i, 0, tc[tc.size() - 1].size())
+    {
+        if(tc[tc.size() - 1][i] == '0' || tc[tc.size() - 1][i] == '1')      //if input present
+            if((wire_sur[i][2] != -1 || wire_sur[i][3] != -1) && (tc[tc.size() - 1][wire_sur[i][2]] == 'x' || tc[tc.size() - 1][wire_sur[i][3]] == 'x'))              //if not PI and has x (is a j frontier)
+                front.pb(mp(wire_sur[i][0], i));        // Gate on the left is a J frontier then, add to list
+    }
+    return front;
 }
 
 vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, char prop_dc[7][12][3], int wire_sur[][6], vii branch_sur)
