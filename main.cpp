@@ -105,6 +105,151 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
     //If none of these work, default value is -1 anyway. 
 }
 
+char tcube_intersec(char w1, char w2){
+    char out;
+    switch(w1){
+        case '0':
+            switch(w2){
+                case '0':
+                    out = '0';
+                    break;
+                case '1':
+                    out = 'C';
+                    break;
+                case 'x':
+                    out = '0';
+                    break;     
+                case 'D':
+                    out = 'C';
+                    break;
+                case 'E':
+                    out = 'C';
+                    break;
+                case 'N':
+                    out = 'C';
+                    break;
+                }
+            break;
+
+        case '1':
+            switch(w2){
+                case '0':
+                    out = 'C';
+                    break;
+                case '1':
+                    out = '1';
+                    break;
+                case 'x':
+                    out = '1';
+                    break;     
+                case 'D':
+                    out = 'C';
+                    break;
+                case 'E':
+                    out = 'C';
+                    break;
+                case 'N':
+                    out = 'C';
+                    break;
+                }
+            break;
+        
+        case 'x':
+            switch(w2){
+                case '0':
+                    out = '0';
+                    break;
+                case '1':
+                    out = '1';
+                    break;
+                case 'x':
+                    out = 'x';
+                    break;     
+                case 'D':
+                    out = 'D';
+                    break;
+                case 'E':
+                    out = 'E';
+                    break;
+                case 'N':
+                    out = 'C';
+                    break;
+                }
+            break;
+
+        case 'D':
+            switch(w2){
+                case '0':
+                    out = 'C';
+                    break;
+                case '1':
+                    out = 'C';
+                    break;
+                case 'x':
+                    out = 'D';
+                    break;     
+                case 'D':
+                    out = 'D';
+                    break;
+                case 'E':
+                    out = 'C';
+                    break;
+                case 'N':
+                    out = 'C';
+                    break;
+                }
+            break;
+        
+        case 'E':
+            switch(w2){
+                case '0':
+                    out = 'C';
+                    break;
+                case '1':
+                    out = 'C';
+                    break;
+                case 'x':
+                    out = 'E';
+                    break;     
+                case 'D':
+                    out = 'C';
+                    break;
+                case 'E':
+                    out = 'E';
+                    break;
+                case 'N':
+                    out = 'C';
+                    break;
+                }
+            break;
+        
+        case 'N':
+            switch(w2){
+                case '0':
+                    out = 'C';
+                    break;
+                case '1':
+                    out = 'C';
+                    break;
+                case 'x':
+                    out = 'C';
+                    break;     
+                case 'D':
+                    out = 'C';
+                    break;
+                case 'E':
+                    out = 'C';
+                    break;
+                case 'N':
+                    out = 'N';
+                    break;
+                }
+            break;
+    }
+
+    return out;
+}
+
 vector<pi> dFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
 {
     vector<pi> front;
