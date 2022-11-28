@@ -23,6 +23,8 @@ bool sortbysec(const pair<int, int> &a,
     return a.second < b.second;
 }
 
+
+int def_wiresur[6] = {-1, -1, -1, -1, -1, -1};
 void addWire(vector<pi> wire[], int u, int v, int w_name)
 {
     wire[u].pb(mp(v, w_name));
@@ -41,6 +43,60 @@ void printCirc(vector<pi> wire[], int n_node)
         }
         cout << endl;
     }
+}
+
+void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
+{
+    rep(u, 0, 6)
+        def_wiresur[u] = -1;
+
+    rep(u, 0, n_node)
+    {   
+        for(auto x = adj[u].begin(); x != adj[u].end(); x++)
+        {
+            int v = x->first;
+            int w = x->second;
+            if(w == wire_name)
+            {
+                def_wiresur[0] = u;
+                def_wiresur[1] = v;
+                break;
+            }
+        }
+    }
+    int in = 2;
+    bool pi = 1, po = 1;
+    rep(u, 0, n_node)
+    {
+        for(auto x = adj[u].begin(); x != adj[u].end(); x++)
+        {
+            int v = x->first;
+            int w = x->second;
+
+            if(v == def_wiresur[0])
+            {
+                pi = 0;
+                def_wiresur[in] = w-50;
+                if(nodetype[def_wiresur[0]] == 1)
+                    def_wiresur[3] = def_wiresur[2];
+                else
+                    in++;
+            }
+
+            if(u == def_wiresur[1])
+            {
+                po = 0;
+                def_wiresur[4] = w-50;
+            }
+
+            if(v = def_wiresur[1] && w != wire_name)
+            {
+                po = 0;
+                def_wiresur[5] = w-50;
+            }
+        }
+    }
+    //If none of these work, default value is -1 anyway. 
 }
 
 int main(void){
@@ -62,7 +118,7 @@ int main(void){
     } 
     rep(i, 0, n_node)
     {   
-        cout<<"Enter the type of node for node" << i << ":\n 0: input/output\n 1: branching point\n 2: AND\n 3: OR\n 4:NAND\n 5:NOR\n 6:XOR\n 7:XNOR";
+        cout<<"Enter the type of node for node" << i << ":\n -1: input\n 0: output\n 1: branching point\n 2: AND\n 3: OR\n 4:NAND\n 5:NOR\n 6:XOR\n 7:XNOR";
         int type;
         cin >> type;
         nodetype.pb(type);
@@ -96,7 +152,19 @@ int main(void){
             rep(k, 0, n_edge)
                 temp.pb('x');
             test_cube.pb(temp);
-            test_cube.pb(test_cube[0]);
+            test_cube.pb(test_cube[test_cube.size()-1]);
+
+           int wire_sur[n_edge][6];
+           // rep(k, 0, n_edge)
+           //     rep(l, 0, 6)
+           //         wire_sur[k][l] = 0;
+
+            rep(k, 0, n_edge) 
+            {
+                getwire_sur(adj, n_node, 50+k, nodetype);
+                rep(l, 0, 6)
+                    wire_sur[k][l] = def_wiresur[l];
+            }
         }
     }
 
