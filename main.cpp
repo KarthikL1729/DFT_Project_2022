@@ -4,7 +4,8 @@
 
 int main(void)
 {
-    file_read int n_node;
+    //file_read 
+    int n_node;
     cout << "Enter the number of nodes (Branching points, gates, inputs, outputs): \n";
     cin >> n_node;
     int n_edge;

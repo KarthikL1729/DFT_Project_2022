@@ -13,74 +13,107 @@ Enter the type of node:
  6:XNOR
  7: NOT
 0 -> 4 50 ;
-1 -> 4 51 ;
-2 -> 5 52 ;
-3 -> 5 53 ;
-4 -> 6 54 ;
-5 -> 6 55 ;
-6 -> 7 56 ;
-7 -> 
+1 -> 3 51 ;
+2 -> 19 52 ;
+3 -> 4 53 ;7 54 ;
+4 -> 6 55 ;
+5 -> 15 57 ;10 58 ;
+6 -> 5 56 ;8 59 ;
+7 -> 8 60 ;17 61 ;
+8 -> 9 62 ;
+9 -> 10 63 ;11 64 ;18 65 ;
+10 -> 12 66 ;
+11 -> 16 67 ;
+12 -> 15 68 ;13 69 ;
+13 -> 14 70 ;
+14 -> 16 71 ;17 72 ;
+15 -> 20 73 ;
+16 -> 21 74 ;
+17 -> 18 75 ;
+18 -> 19 76 ;
+19 -> 22 77 ;
+20 -> 
+21 -> 
+22 -> 
 Node 0 is of type -1
 Node 1 is of type -1
 Node 2 is of type -1
-Node 3 is of type -1
-Node 4 is of type 5
-Node 5 is of type 5
-Node 6 is of type 1
-Node 7 is of type -2
+Node 3 is of type 0
+Node 4 is of type 1
+Node 5 is of type 0
+Node 6 is of type 0
+Node 7 is of type 0
+Node 8 is of type 6
+Node 9 is of type 0
+Node 10 is of type 6
+Node 11 is of type 7
+Node 12 is of type 0
+Node 13 is of type 7
+Node 14 is of type 0
+Node 15 is of type 3
+Node 16 is of type 2
+Node 17 is of type 6
+Node 18 is of type 3
+Node 19 is of type 3
+Node 20 is of type -2
+Node 21 is of type -2
+Node 22 is of type -2
 Considering s-a-0 for wire 50
-Test Complete
-Test Vector: 1 1 0 1 
-Path (Format: Edge-[Node]): 50-[4]-54-[6]-56-[7]-
+Fault Untestable
+
 Considering s-a-0 for wire 51
-Test Complete
-Test Vector: 1 1 0 1 
-Path (Format: Edge-[Node]): 51-[4]-54-[6]-56-[7]-
+Fault Untestable
+
 Considering s-a-0 for wire 52
 Test Complete
-Test Vector: 0 1 1 1 
-Path (Format: Edge-[Node]): 52-[5]-55-[6]-56-[7]-
+Test Vector: 1 1 1 
+Path (Format: Edge-[Node]): 52-[19]-77-[22]-
 Considering s-a-0 for wire 53
-Test Complete
-Test Vector: 0 1 1 1 
-Path (Format: Edge-[Node]): 53-[5]-55-[6]-56-[7]-
+Fault Untestable
+
 Considering s-a-0 for wire 54
 Test Complete
-Test Vector: 1 0 0 1 
-Path (Format: Edge-[Node]): 54-[6]-56-[7]-
+Test Vector: 1 1 1 
+Path (Format: Edge-[Node]): 54-[7]-61-[17]-75-[18]-76-[19]-77-[22]-
 Considering s-a-0 for wire 55
-Test Complete
-Test Vector: 0 1 1 0 
-Path (Format: Edge-[Node]): 55-[6]-56-[7]-
+Fault Untestable
+
 Considering s-a-0 for wire 56
+Fault Untestable
+
+Considering s-a-0 for wire 57
+Fault Untestable
+
+Considering s-a-0 for wire 58
+Fault Untestable
+
+Considering s-a-0 for wire 59
 Test Complete
-Test Vector: x x x x 
-Path (Format: Edge-[Node]): 56-[7]-
-Considering s-a-1 for wire 50
+Test Vector: 1 1 1 
+Path (Format: Edge-[Node]): 59-[8]-62-[9]-65-[18]-76-[19]-77-[22]-
+Considering s-a-0 for wire 60
 Test Complete
-Test Vector: 0 1 0 1 
-Path (Format: Edge-[Node]): 50-[4]-54-[6]-56-[7]-
-Considering s-a-1 for wire 51
+Test Vector: 1 1 1 
+Path (Format: Edge-[Node]): 60-[8]-62-[9]-65-[18]-76-[19]-77-[22]-
+Considering s-a-0 for wire 61
 Test Complete
-Test Vector: 1 0 0 1 
-Path (Format: Edge-[Node]): 51-[4]-54-[6]-56-[7]-
-Considering s-a-1 for wire 52
+Test Vector: 1 1 1 
+Path (Format: Edge-[Node]): 61-[17]-75-[18]-76-[19]-77-[22]-
+Considering s-a-0 for wire 62
 Test Complete
-Test Vector: 0 1 0 1 
-Path (Format: Edge-[Node]): 52-[5]-55-[6]-56-[7]-
-Considering s-a-1 for wire 53
+Test Vector: 1 1 1 
+Path (Format: Edge-[Node]): 62-[9]-65-[18]-76-[19]-77-[22]-
+Considering s-a-0 for wire 63
+Fault Untestable
+
+Considering s-a-0 for wire 64
+Fault Untestable
+
+Considering s-a-0 for wire 65
 Test Complete
-Test Vector: 0 1 1 0 
-Path (Format: Edge-[Node]): 53-[5]-55-[6]-56-[7]-
-Considering s-a-1 for wire 54
-Test Complete
-Test Vector: 1 1 0 1 
-Path (Format: Edge-[Node]): 54-[6]-56-[7]-
-Considering s-a-1 for wire 55
-Test Complete
-Test Vector: 0 1 1 1 
-Path (Format: Edge-[Node]): 55-[6]-56-[7]-
-Considering s-a-1 for wire 56
-Test Complete
-Test Vector: x x x x 
-Path (Format: Edge-[Node]): 56-[7]-
+Test Vector: 1 1 1 
+Path (Format: Edge-[Node]): 65-[18]-76-[19]-77-[22]-
+Considering s-a-0 for wire 66
+Fault Untestable
+
+Considering s-a-0 for wire 67
