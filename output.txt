@@ -8,8 +8,8 @@ Enter first connection in netlist format (node1 node2 wirenum):
 Enter first connection in netlist format (node1 node2 wirenum): 
 Enter first connection in netlist format (node1 node2 wirenum): 
 Enter the type of node for node0:
- -2: input
- -1: output
+ -2: output
+ -1: input
  0: branching point
  1: AND
  2: OR
@@ -17,8 +17,8 @@ Enter the type of node for node0:
  4:NOR
  5:XOR
  6:XNOREnter the type of node for node1:
- -2: input
- -1: output
+ -2: output
+ -1: input
  0: branching point
  1: AND
  2: OR
@@ -26,8 +26,8 @@ Enter the type of node for node0:
  4:NOR
  5:XOR
  6:XNOREnter the type of node for node2:
- -2: input
- -1: output
+ -2: output
+ -1: input
  0: branching point
  1: AND
  2: OR
@@ -35,8 +35,8 @@ Enter the type of node for node0:
  4:NOR
  5:XOR
  6:XNOREnter the type of node for node3:
- -2: input
- -1: output
+ -2: output
+ -1: input
  0: branching point
  1: AND
  2: OR
@@ -44,8 +44,8 @@ Enter the type of node for node0:
  4:NOR
  5:XOR
  6:XNOREnter the type of node for node4:
- -2: input
- -1: output
+ -2: output
+ -1: input
  0: branching point
  1: AND
  2: OR
@@ -53,8 +53,8 @@ Enter the type of node for node0:
  4:NOR
  5:XOR
  6:XNOREnter the type of node for node5:
- -2: input
- -1: output
+ -2: output
+ -1: input
  0: branching point
  1: AND
  2: OR
@@ -62,8 +62,8 @@ Enter the type of node for node0:
  4:NOR
  5:XOR
  6:XNOREnter the type of node for node6:
- -2: input
- -1: output
+ -2: output
+ -1: input
  0: branching point
  1: AND
  2: OR
@@ -71,8 +71,8 @@ Enter the type of node for node0:
  4:NOR
  5:XOR
  6:XNOREnter the type of node for node7:
- -2: input
- -1: output
+ -2: output
+ -1: input
  0: branching point
  1: AND
  2: OR
@@ -87,14 +87,14 @@ Enter the type of node for node0:
 5 -> 6 55 ;
 6 -> 7 56 ;
 7 -> 
-Node 0 is of type -2
-Node 1 is of type -2
-Node 2 is of type -2
-Node 3 is of type -2
+Node 0 is of type -1
+Node 1 is of type -1
+Node 2 is of type -1
+Node 3 is of type -1
 Node 4 is of type 5
 Node 5 is of type 5
 Node 6 is of type 1
-Node 7 is of type -1
+Node 7 is of type -2
 Considering s-a-0 for wire 50
 Fault Untestable
 
@@ -112,13 +112,13 @@ Fault Untestable
 
 Path (Format: Edge-[Node]): 53-[5]
 Considering s-a-0 for wire 54
-Fault Untestable
-
-Path (Format: Edge-[Node]): 54-[6]
+Test Complete
+Test Vector: 1 0 x x 
+Path (Format: Edge-[Node]): 54-[6]56-[7]
 Considering s-a-0 for wire 55
-Fault Untestable
-
-Path (Format: Edge-[Node]): 55-[6]
+Test Complete
+Test Vector: x x 1 0 
+Path (Format: Edge-[Node]): 55-[6]56-[7]
 Considering s-a-0 for wire 56
 Test Complete
 Test Vector: x x x x 
@@ -140,13 +140,13 @@ Fault Untestable
 
 Path (Format: Edge-[Node]): 53-[5]
 Considering s-a-1 for wire 54
-Fault Untestable
-
-Path (Format: Edge-[Node]): 54-[6]
+Test Complete
+Test Vector: 1 1 x x 
+Path (Format: Edge-[Node]): 54-[6]56-[7]
 Considering s-a-1 for wire 55
-Fault Untestable
-
-Path (Format: Edge-[Node]): 55-[6]
+Test Complete
+Test Vector: x x 1 1 
+Path (Format: Edge-[Node]): 55-[6]56-[7]
 Considering s-a-1 for wire 56
 Test Complete
 Test Vector: x x x x 

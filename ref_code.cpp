@@ -527,7 +527,7 @@ int main() {
     }
     else if(var ==1) {
         V = 8;
-        edge = 8;
+        edge = 7;
     }
     else if(var == 3) {
         V = 16;
@@ -565,15 +565,14 @@ int main() {
     }
     else if(var ==1) {
         addEdge(adj, 0, 4, 20); 
-        addEdge(adj, 1, 3, 21); 
+        addEdge(adj, 1, 4, 21); 
         addEdge(adj, 2, 5, 22); 
-        addEdge(adj, 3, 4, 23); 
-        addEdge(adj, 3, 5, 24); 
-        addEdge(adj, 4, 6, 25); 
-        addEdge(adj, 5, 6, 26);
-        addEdge(adj, 6, 7, 27);
+        addEdge(adj, 3, 5, 23); 
+        addEdge(adj, 4, 6, 24); 
+        addEdge(adj, 5, 6, 25); 
+        addEdge(adj, 6, 7, 26);
         printGraph(adj, V); 
-        gate_type_tmp.push_back({-1,-1,-1,7,0,1,3,-2});
+        gate_type_tmp.push_back({-1,-1,-1,-1,4,4,0,-2});
     }
     else if(var == 3) {      
         addEdge(adj, 0, 8, 20); 
