@@ -1,0 +1,12 @@
+* Netlist created with www.circuit-diagram.org
+* 
+'nand2 out:0 in1:1 in0:2 t=NAND
+'xnor2 out:3 in1:4 in0:5 t=XNOR
+'nand2 out:2 in1:4 in0:6 t=NAND
+'and2 out:5 in1:7 in0:8 t=AND
+'not in:4 out:9 t=NOT
+'not out:10 in:3 t=NOT
+'or2 out:11 in1:9 in0:10 t=OR
+'xnor2 out:6 in0:10 in1:7 t=XNOR
+'xnor2 out:4 in1:7 in0:5 t=XNOR
+'nand2 out:12 in0:5 in1:3 t=NAND
