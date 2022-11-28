@@ -189,18 +189,19 @@ void getgatedata(vector<pair<int,int> > adj[], int V, int e, int gate_type[])
 {
     e = e+20;
     int v, w; 
-    for (int u = 0; u < V; u++) 
+    for (int u = 0; u < V; u++)                                 //node iteration
     { 
         for (auto it = adj[u].begin(); it!=adj[u].end(); it++) 
         { 
             v = it->first;
             w = it->second;
             if(w == e) {
+                // Iterate through all nodes, check if wire is connected to a gate, save those gates.
                 i_gatedata[0] = u;
                 i_gatedata[1] = v;
                 break;
             }
-        }
+        } // first two entries of i_gatedata[] are the gates connected to the wire e
     }
     int i = 2;
     int pi = 1;
@@ -209,39 +210,47 @@ void getgatedata(vector<pair<int,int> > adj[], int V, int e, int gate_type[])
     {
         for (auto it1 = adj[u].begin(); it1!=adj[u].end(); it1++) 
         { 
-            v = it1->first;
-            w = it1->second;
+            v = it1->first;                 // Node connected to node u
+            w = it1->second;                // Wire connecting them
             
-            if(v == i_gatedata[0]) {
-                if(gate_type[i_gatedata[0]]==7) {
-                    i_gatedata[2] = w-20;
-                    i_gatedata[3] = w-20;
-                    pi = 0;
+            if(v == i_gatedata[0]) {                        // If node connected to node u is the gate connected to the previous wire
+                if(gate_type[i_gatedata[0]]==7) {           // if branch
+                    i_gatedata[2] = w-20;                   // edge indices that feed into the branch that was input to the initial gate from before saved
+                    i_gatedata[3] = w-20;                   // Because branch only has one input
+                    pi = 0;                                 // not primaryb input, so
                 }
                 else{
-                    pi = 0;
-                    i_gatedata[i] = w-20;
-                    i++;
+                    pi = 0;                                 // Still not primary input, because gate is there behind
+                    i_gatedata[i] = w-20;                   // One of the inputs to the gate
+                    i++;                                    // Find the other input, increment to store next time
                 }
             }
-            if(u == i_gatedata[1]) {
-
-                i_gatedata[4] = w-20;
-                po = 0;
+            if(u == i_gatedata[1]) {                        // u is the gate that was connected to the output of e that we had before here
+                i_gatedata[4] = w-20;                       // Output of said gate u, feeding into another gate for sure, because is u and v exists
+                po = 0;                                     // Output wire of u stored, not primary output
             }
             if(v == i_gatedata[1] && w != e) {
-                i_gatedata[5] = w-20;
-                po = 0;
+                i_gatedata[5] = w-20;                       // Yay then we found other input to the gate v, other than e
+                po = 0;                                     // e is still not primary output
             }
         }
-        if(pi == 1) {
-            i_gatedata[2] = -1;
+        if(pi == 1) {                                       // e is a primary input
+            i_gatedata[2] = -1;                             
             i_gatedata[3] = -1;
         }
-        if(po == 1) {
+        if(po == 1) {                                       // e is a primary output
             i_gatedata[4] = -1;
             i_gatedata[5] = -1;
         }
+        /*
+            igatedata[0] = gate on left of e
+            igatedata[1] = gate on right of e
+            igatedata[2] = input 1 of gate on left of e
+            igatedata[3] = input 2 of gate on left of e
+            igatedata[4] = output of gate on right of e
+            igatedata[5] = input 2 of gate on right of e
+        */
+
     } 
 }
 
@@ -250,11 +259,13 @@ vector<int> getbranchdata(vector<pair<int,int> > adj[], int V, int i, int u) {
     vector<int> branchdata;
     int w,v;
     branchdata.push_back(i);
+    // goes through the adjacency list of node u alone
+    // u is node that is definitely a branchout on the right of wire i (e from getgatedata)
     for (auto it = adj[u].begin(); it!=adj[u].end(); it++) 
     { 
-        v = it->first;
+        v = it->first;                                  // gates that the branchout is connected to
         w = it->second;
-        branchdata.push_back(w-20);
+        branchdata.push_back(w-20);                     // only pushing back wire that is connected to branch point
     }   
     return branchdata;
 }
@@ -684,7 +695,8 @@ int main() {
             vector<vector<int>> branchdata;
             for(int e=0; e<edge; e++) {
                 if(gate_type[gatedata[e][1]]==7) {
-                    branchdata.push_back(getbranchdata(adj, V, e,gatedata[e][1]));
+                    // if branchout 
+                    branchdata.push_back(getbranchdata(adj, V, e, gatedata[e][1]));
                 }
             }
             tc[tc.size()-1][fault_net] = fault;
