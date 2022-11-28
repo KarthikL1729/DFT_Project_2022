@@ -129,9 +129,77 @@ vector<pi> jFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
     return front;
 }
 
-vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, int prop_dc[7][12][3], int wire_sur[][6])
+vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc[7][12][3], int wire_sur[][6])
 {
-    
+    // J Frontier
+    vector<pi> jfront = jFrontier(tc_new, nodetype, wire_sur);
+    if(jfront.empty()){         // No frontier implies peimary input
+        return tc_new[tc_new.size() - 1];
+    }
+
+    for(auto it = jfront.begin(); it != jfront.end(); it++){
+        int gate = it->first;
+        int wire = it->second;
+
+        // Singular cover
+        vector<vector<char> > tmp_sc;
+        rep(i, 0, 4){
+            vector<char> sc_vector;
+            if(tcube_intersec(prop_dc[nodetype[gate]][i][0], tc_new[tc_new.size()-1][wire_sur[wire][2]]) != 'C'
+               && tcube_intersec(prop_dc[nodetype[gate]][i][1], tc_new[tc_new.size()-1][wire_sur[wire][3]]) != 'C'
+               && prop_dc[nodetype[gate]][i][2] == tc_new[tc_new.size() - 1][wire]){
+
+                    sc_vector = {tcube_intersec(prop_dc[nodetype[gate]][i][0], tc_new[tc_new.size()-1][wire_sur[wire][2]]),
+                                 tcube_intersec(prop_dc[nodetype[gate]][i][1], tc_new[tc_new.size() - 1][wire_sur[wire][3]]),
+                                 prop_dc[nodetype[gate]][i][2]};
+                    
+                    tmp_sc.pb(sc_vector);
+               }
+        }
+
+        if(tmp_sc.empty()){
+            return {'0'};
+        }
+
+        vector<vector<char> > tc_new2;
+        vector<char> tc_new3;
+
+        while(!tmp_sc.empty()){
+            tc_new[tc_new.size()-1][wire_sur[wire][2]] = tmp_sc[tmp_sc.size()-1][0];
+            tc_new[tc_new.size()-1][wire_sur[wire][3]] = tmp_sc[tmp_sc.size()-1][1];
+            tc_new[tc_new.size()-1][wire] = tmp_sc[tmp_sc.size()-1][2];
+            tc_new.pb(tc_new[tc_new.size()-1]);
+
+            tmp_sc.pop_back();
+            tc_new2 = tc_new;
+
+            for(auto it = jfront.begin(); it != jfront.end(); it++){
+                int w = it->second;
+                if(w != wire){
+                    tc_new2[tc_new.size() - 1][w] = 'x';
+                }
+            }
+
+            tc_new3 = justifyFront(tc_new2, nodetype, prop_dc, wire_sur);
+
+            if(tc_new3.size() == 1){
+                if(tc_new.empty()){
+                    return{'0'};
+                }
+                else{
+                    tc_new.pop_back();
+                }
+            }
+            else{
+                vector<char> tc_vector;
+                rep(i, 0, tc_new[tc_new.size() - 1].size()){
+                    tc_vector.pb(tcube_intersec(tc_new[tc_new.size()-1][i], tc_new3[i]));
+                }
+            }
+
+        }
+    }
+    return tc_new[tc_new.size() -1];
 }
 
 vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, char prop_dc[7][12][3], int wire_sur[][6], vii branch_sur)
@@ -154,7 +222,7 @@ vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, 
     // if d frontier not empty
     vector<vector<char>> tc_new;
     tc_new.pb(tc[tc.size() - 1]);
-    for(auto x = dFront.begin(); x != dFront.end(); dFront++)
+    for(auto x = dFront.begin(); x != dFront.end(); x++)
     {
         // Iterate through the dFrontiers, save pdc
         vector<vector<char>> pdc_new;
