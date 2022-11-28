@@ -54,6 +54,11 @@ vi getbranch_sur(vector<pi> adj[], int n_node, int wire_name, int node_front)
         w = x->second;               // wire
         branchsur.push_back(w - 50); // pushing back only wire that connects branch point to gate
     }
+    //debug
+    //cout<<"getbranchdata done\n";
+    //for(int  i = 0; i < branchsur.size(); i++)
+    //    cout << branchsur[i] << " " ;
+    //cout<<endl;
     return branchsur;
 }
 
@@ -106,7 +111,7 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
                 def_wiresur[4] = w - 50; // store wire
             }
 
-            if (v = def_wiresur[1] && w != wire_name)
+            if (v == def_wiresur[1] && w != wire_name)
             {
                 po = 0;
                 def_wiresur[5] = w - 50; // Other input to the gate, wire_name not primary output because it feeds into a gate
@@ -123,6 +128,12 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
             def_wiresur[5] = -1;
         }
     }
+    //debug
+    //cout<<"getgatedata done\n";
+    //rep(i, 0, 6)
+    //    cout<< def_wiresur[i] << " ";
+    //cout<<endl;
+            
     // If none of these work, default value is -1 anyway.
     /*
             def_wiresur[0] = gate on left of e
@@ -283,7 +294,7 @@ char tcube_intersec(char w1, char w2)
         }
         break;
     }
-
+    //debug
     return out;
 }
 
@@ -297,6 +308,10 @@ vector<pi> dFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
                 if (tc[tc.size() - 1][wire_sur[i][4]] == 'x' && tc[tc.size() - 1][wire_sur[i][5]] == 'x') // if not PO and has x (is a d frontier)
                     front.pb(mp(wire_sur[i][1], i));                                                      // Gate on the right is a D frontier then, add to list
     }
+    //debug
+    //cout << "dfrontier done\n";
+    //rep(i, 0, front.size())
+    //    cout << front[i].first << " " << front[i].second << endl;
     return front;
 }
 
@@ -310,6 +325,10 @@ vector<pi> jFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
                 if (tc[tc.size() - 1][wire_sur[i][2]] == 'x' && tc[tc.size() - 1][wire_sur[i][3]] == 'x') // if not PI and has x (is a j frontier)
                     front.pb(mp(wire_sur[i][0], i));                                                      // Gate on the left is a J frontier then, add to list
     }
+    //debug
+    //cout << "jfrontier done\n";
+    //rep(i, 0, front.size())
+    //    cout << front[i].first << " " << front[i].second << endl;
     return front;
 }
 
@@ -321,6 +340,11 @@ vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc
     jfront = jFrontier(tc_new, nodetype, wire_sur);
     if (jfront.empty())
     { // No frontier implies primary input
+        //debug
+        //cout << "No J frontier\n";
+        //rep(i, 0, tc_new[tc_new.size() - 1].size())
+        //    cout<< tc_new[tc_new.size() - 1][i] << " ";
+        //cout<<endl;
         return tc_new[tc_new.size() - 1];
     }
 
@@ -349,6 +373,8 @@ vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc
 
         if (tmp_sc.empty())
         {
+            //debug
+            //cout << "No singular cover found\n";
             return {'0'};
         }
 
@@ -380,6 +406,8 @@ vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc
             {
                 if (tc_new.empty())
                 {
+                    //debug
+                    //cout << "justify done tc_new empty\n";
                     return {'0'};
                 }
                 else
@@ -398,6 +426,11 @@ vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc
             }
         }
     }
+    //debug
+    //cout << "justify done\n";
+    //rep(i, 0, tc_new[tc_new.size() - 1].size())
+    //    cout << tc_new[tc_new.size() - 1][i] << " ";
+    //cout << endl;
     return tc_new[tc_new.size() - 1];
 }
 
@@ -414,9 +447,20 @@ vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, 
                 flag = 1; // Error detected
         }
         if (!flag)
+        {
+            //debug
+            //cout << "No D frontier\n";
             return {'0'}; // Error not detected
+        }
         else
+        {
+            //debug
+            //cout << "Error detected\n";
+            //rep(i, 0, tc[tc.size() - 1].size())
+            //    cout << tc[tc.size() - 1][i] << " ";
+            //cout << endl;
             return tc[tc.size() - 1];
+        }
     }
 
     // if d frontier not empty
@@ -459,10 +503,21 @@ vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, 
     {
         tc[tc.size() - 1] = D_algorithm(tc_new, nout, nodetype, prop_dc, wire_sur, branch_sur);
         tc.pb(tc[tc.size() - 1]);
+        //debug
+        //cout << "D algorithm branch done\n";
+        //rep(i, 0, tc[tc.size() - 1].size())
+        //    cout << tc[tc.size() - 1][i] << " ";
+        //cout<<endl;
         return tc[tc.size() - 1];
     }
     else
+    {
+        //debug
+        //cout << "D algorithm branch done, end else\n";
         return {'0'};
+    }
+    //debug
+    //cout<<"why are you here\n";
     return {'0'};
 }
 
@@ -524,6 +579,11 @@ vector<char> D_algorithm(vector<vector<char>> test_cube, int nout, vi node_type,
             {
                 test_cube.pb(out_tc);
                 flag2 = 1;
+                //debug
+                //cout << "branch break f2 = 1\n";
+                //rep(i, 0, test_cube[test_cube.size() - 1].size())
+                //    cout << test_cube[test_cube.size() - 1][i] << " ";
+                //cout<<endl;
                 return test_cube[test_cube.size() - 1]; // result is returned
             }
             else
@@ -532,7 +592,11 @@ vector<char> D_algorithm(vector<vector<char>> test_cube, int nout, vi node_type,
             }
         }
         if (!flag2)
+        {
+            //debug
+            //cout << "branch break f2 = 0\n";
             return {'0'};
+        }
     }
 
     else
@@ -541,15 +605,23 @@ vector<char> D_algorithm(vector<vector<char>> test_cube, int nout, vi node_type,
         out_tc = D_algorithm_branch(test_cube, nout, node_type, prop_dc, wire_sur, branch_sur);
         if (out_tc.size() == 1)
         {
+            //debug
+            //cout << "not branch break, out size = 1\n";
             return {'0'};
         }
         else
         {
             test_cube.pb(out_tc);
+            //debug
+            //cout << "not branch break, out size != 1\n";
+            //rep(i, 0, test_cube[test_cube.size() - 1].size())
+            //    cout << test_cube[test_cube.size() - 1][i] << " ";
+            //cout<<endl;
             return test_cube[test_cube.size() - 1];
         }
     }
-
+    //debug
+    //cout << "why are you here2\n";
     return {'0'};
 }
 
@@ -599,6 +671,7 @@ int main(void)
     {
         rep(j, 0, n_edge)
         {
+            //int i = 0, j = 0;
             cout << "Considering s-a-" << i << " for wire " << j + 50 << endl;
             fwire = j;
             f_state = f_states[i];
@@ -622,8 +695,9 @@ int main(void)
                     wire_sur[k][l] = def_wiresur[l];
             }
             vii branch_sur;
-            rep(k, 0, n_edge) if (nodetype[wire_sur[k][1]] == 0) // is branch
-                branch_sur.pb(getbranch_sur(adj, n_node, k, wire_sur[k][1]));
+            rep(k, 0, n_edge) 
+                if (nodetype[wire_sur[k][1]] == 0) // is branch
+                    branch_sur.pb(getbranch_sur(adj, n_node, k, wire_sur[k][1]));
 
             test_cube[test_cube.size() - 1][fwire] = f_state; // Updating next state with fault from xxxxxx
             test_cube.pb(test_cube[test_cube.size() - 1]);    // New copy
