@@ -38,15 +38,17 @@ void printCirc(vector<pi> wire[], int n_node)
     }
 }
 
-vi getbranch_sur(vector<pi> adj[], int n_node, int node_name, int node_front)
+vi getbranch_sur(vector<pi> adj[], int n_node, int wire_name, int node_front)
 {
     vi branchsur;
-    branchsur.pb(node_name);
-    for(auto x = adj[node_name].begin(); x != adj[node_name].end(); x++)
+    branchsur.pb(wire_name);
+    // goes through the adjacency list of node u alone
+    // u is node that is definitely a branchout on the right of wire i 
+    for(auto x = adj[node_front].begin(); x != adj[node_front].end(); x++)
     {
-        int v = x->first;
-        int w = x->second;
-        branchsur.push_back(w - 50);
+        int v = x->first;                   // gate that the branchout is connected to
+        int w = x->second;                  // wire 
+        branchsur.push_back(w - 50);        // pushing back only wire that connects branch point to gate
     }
     return branchsur;
 }
@@ -54,7 +56,7 @@ vi getbranch_sur(vector<pi> adj[], int n_node, int node_name, int node_front)
 void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
 {
     rep(u, 0, 6)
-        def_wiresur[u] = -1;
+        def_wiresur[u] = -1;                        //initialising values to -1
 
     rep(u, 0, n_node)
     {   
@@ -64,11 +66,12 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
             int w = x->second;
             if(w == wire_name)
             {
+                // Iterate through all nodes, find wire, check if wire is connected to a gate, save those gates.
                 def_wiresur[0] = u;
                 def_wiresur[1] = v;
                 break;
             }
-        }
+        } // first two entries of i_gatedata[] are the gates connected to the wire 
     }
     int in = 2;
     bool pi = 1, po = 1;
@@ -76,33 +79,41 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
     {
         for(auto x = adj[u].begin(); x != adj[u].end(); x++)
         {
-            int v = x->first;
-            int w = x->second;
+            int v = x->first;                 // Node connected to node u
+            int w = x->second;                // Wire connecting them
 
-            if(v == def_wiresur[0])
+            if(v == def_wiresur[0])            // If node connected to node u is the gate connected to the previous wire
             {
-                pi = 0;
-                def_wiresur[in] = w-50;
-                if(nodetype[def_wiresur[0]] == 0)
-                    def_wiresur[3] = def_wiresur[2];
+                pi = 0;                                 // not primary input
+                def_wiresur[in] = w-50;                 // wire that feeds into the gate
+                if(nodetype[def_wiresur[0]] == 0)       //if branch point
+                    def_wiresur[3] = def_wiresur[2];    // other wire is same, because stem
                 else
-                    in++;
+                    in++;                               // if not then find other input
             }
 
-            if(u == def_wiresur[1])
+            if(u == def_wiresur[1])                     // u is gate that was connected to the output of the wire_name that we had before here
             {
-                po = 0;
-                def_wiresur[4] = w-50;
+                po = 0;                                 // not primary output, because u definitely feeds into a v
+                def_wiresur[4] = w-50;                  // store wire
             }
 
             if(v = def_wiresur[1] && w != wire_name)
             {
                 po = 0;
-                def_wiresur[5] = w-50;
+                def_wiresur[5] = w-50;                  // Other input to the gate, wire_name not primary output because it feeds into a gate
             }
         }
     }
-    //If none of these work, default value is -1 anyway. 
+    //If none of these work, default value is -1 anyway.
+    /*
+            def_wiresur[0] = gate on left of e
+            def_wiresur[1] = gate on right of e
+            def_wiresur[2] = input 1 of gate on left of e
+            def_wiresur[3] = input 2 of gate on left of e
+            def_wiresur[4] = output of gate on right of e
+            def_wiresur[5] = input 2 of gate on right of e
+        */ 
 }
 
 char tcube_intersec(char w1, char w2){
@@ -278,7 +289,7 @@ vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc
 {
     // J Frontier
     vector<pi> jfront = jFrontier(tc_new, nodetype, wire_sur);
-    if(jfront.empty()){         // No frontier implies peimary input
+    if(jfront.empty()){         // No frontier implies primary input
         return tc_new[tc_new.size() - 1];
     }
 
@@ -399,23 +410,23 @@ vector<char> D_algorithm(vector<vector<char> > test_cube, int nout, vi node_type
     char assgn;         // Assignment for branches from fault_net
     bool branch=0;       // Branch flag  
 
-    rep(i, 0, test_cube[test_cube.size()-1].size()){
-        if(test_cube[test_cube.size()-1][i] == 'D' || test_cube[test_cube.size()-1][i] == 'E' ){
-            if(node_type[wire_sur[i][0]] == 0){
-                rep(j, 0, branch_sur[i].size()){
-                    int x_flag = 1;
+    rep(i, 0, test_cube[test_cube.size()-1].size()){                                                    //iterate through last testcube
+        if(test_cube[test_cube.size()-1][i] == 'D' || test_cube[test_cube.size()-1][i] == 'E' ){        //if fault
+            if(node_type[wire_sur[i][0]] == 0){                                                         //if branch
+                rep(j, 0, branch_sur[i].size()){                                                        //iterate through list of wires connected to branch
+                    int x_flag = 1;                                                                     //default assume all x
                     rep(k, 1, b_data.size()){
-                        if(test_cube[test_cube.size()-1][b_data[k]]!= 'x'){
+                        if(test_cube[test_cube.size()-1][b_data[k]]!= 'x'){                             //if not x
                             x_flag = 0;
                             break;
                         }
                     }
                     if(x_flag==1){
-                        branch = 1;
-                        b_data = branch_sur[j];
-                        assgn = test_cube[test_cube.size()-1][b_data[0]];
-                        if(! b_data.empty()){
-                            b_data.erase(b_data.begin());
+                        branch = 1;                                                                     
+                        b_data = branch_sur[j];                                     
+                        assgn = test_cube[test_cube.size()-1][b_data[0]];                               //assign stem value
+                        if(!b_data.empty()){
+                            b_data.erase(b_data.begin());                   
                         }
                     }
                 }
@@ -429,15 +440,15 @@ vector<char> D_algorithm(vector<vector<char> > test_cube, int nout, vi node_type
         bool flag2 = 0;
         while(!b_data.empty()){
             test_cube.pb(test_cube[test_cube.size()-1]);
-            test_cube[test_cube.size()-1][b_data[b_data.size()-1]] = assgn;
+            test_cube[test_cube.size()-1][b_data[b_data.size()-1]] = assgn;                             //assigning stem value from before in new tc
             b_data.pop_back();
 
-            out_tc = D_algorithm_branch(test_cube, nout, node_type, prop_dc, wire_sur, branch_sur);
+            out_tc = D_algorithm_branch(test_cube, nout, node_type, prop_dc, wire_sur, branch_sur);     //calling main method
 
             if(out_tc.size() != 0){
                 test_cube.pb(out_tc);
                 flag2 = 1;
-                return test_cube[test_cube.size()-1];
+                return test_cube[test_cube.size()-1];                                                   //result is returned
             }
             else{
                 test_cube.pop_back();
@@ -446,7 +457,7 @@ vector<char> D_algorithm(vector<vector<char> > test_cube, int nout, vi node_type
     }
 
     else{
-
+        //not branch
         out_tc = D_algorithm_branch(test_cube, nout, node_type, prop_dc, wire_sur, branch_sur);
         if(out_tc.size() == 1){
             return {'0'};
