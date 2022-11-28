@@ -654,7 +654,7 @@ int main() {
                          {{'0','0','1'},{'0','1','0'},{'1','0','0'},{'1','1','1'},{'0','0','D'},{'1','1','D'},{'0','1','E'},{'1','0','E'},{'E','0','D'},{'D','0','E'},{'D','1','D'},{'E','1','E'}},
                          {{'0','N','1'},{'1','N','0'},{'N','N','N'},{'N','N','N'},{'0','N','D'},{'1','N','E'},{'N','N','N'},{'N','N','N'},{'D','N','E'},{'E','N','D'},{'N','N','N'},{'N','N','N'}},
                          {{'0','0','0'},{'1','1','1'},{'N','N','N'},{'N','N','N'},{'0','0','E'},{'1','1','D'},{'N','N','N'},{'N','N','N'},{'D','D','D'},{'E','E','E'},{'N','N','N'},{'N','N','N'}}
-                        }; 
+                        };  // 0 to 3 are no errors, 4 to 7 are error at output, 8 to 11 are error at input AND output
     
     int fault_net;
     char fault;
@@ -705,8 +705,8 @@ int main() {
             //PDCF
 
             for(int i = 4; i < 8; i++) {
-                if(dcubes[gate_type[gatedata[fault_net][0]]][i][2] == tc[tc.size()-1][fault_net]) {
-                    tc[tc.size()-1][gatedata[fault_net][2]] = dcubes[gate_type[gatedata[fault_net][0]]][i][0];
+                if(dcubes[gate_type[gatedata[fault_net][0]]][i][2] == tc[tc.size()-1][fault_net]) {                 // Type of gate on left of e has faulty output that is same as dcube of that gate
+                    tc[tc.size()-1][gatedata[fault_net][2]] = dcubes[gate_type[gatedata[fault_net][0]]][i][0];      // Then initialise inputs to those constant values.
                     tc[tc.size()-1][gatedata[fault_net][3]] = dcubes[gate_type[gatedata[fault_net][0]]][i][1];
                 }
             }
