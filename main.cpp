@@ -18,6 +18,9 @@ typedef vector<vi> vii;
 #define brep(i, a, n) for (ll i = n - 1; i >= a; --i)
  
 int def_wiresur[6] = {-1, -1, -1, -1, -1, -1};
+
+vector<char> D_algorithm(vector<vector<char> > test_cube, int nout, vi node_type, char prop_dc[7][12][3], int wire_sur[][6], vii branch_sur);
+
 void addWire(vector<pi> wire[], int u, int v, int w_name)
 {
     wire[u].pb(mp(v, w_name));
@@ -55,9 +58,7 @@ vi getbranch_sur(vector<pi> adj[], int n_node, int wire_name, int node_front)
 
 void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
 {
-    rep(u, 0, 6)
-        def_wiresur[u] = -1;                        //initialising values to -1
-
+    wire_name = wire_name + 50;
     rep(u, 0, n_node)
     {   
         for(auto x = adj[u].begin(); x != adj[u].end(); x++)
@@ -103,6 +104,16 @@ void getwire_sur(vector<pi> adj[], int n_node, int wire_name, vi nodetype)
                 po = 0;
                 def_wiresur[5] = w-50;                  // Other input to the gate, wire_name not primary output because it feeds into a gate
             }
+        }
+        if(pi == 1)
+        {
+            def_wiresur[2] = -1;
+            def_wiresur[3] = -1;
+        }
+        if(po == 1)
+        {
+            def_wiresur[4] = -1;
+            def_wiresur[5] = -1;
         }
     }
     //If none of these work, default value is -1 anyway.
@@ -267,7 +278,7 @@ vector<pi> dFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
     rep(i, 0, tc[tc.size() - 1].size())
     {
         if(tc[tc.size() - 1][i] == 'D' || tc[tc.size() - 1][i] == 'E')      //if fault
-            if((wire_sur[i][4] != -1 || wire_sur[i][5] != -1) && (tc[tc.size() - 1][wire_sur[i][4]] == 'x' || tc[tc.size() - 1][wire_sur[i][5]] == 'x'))              //if not PO and has x (is a d frontier)
+            if((wire_sur[i][4] != -1 || wire_sur[i][5] != -1) && (tc[tc.size() - 1][wire_sur[i][4]] == 'x' && tc[tc.size() - 1][wire_sur[i][5]] == 'x'))              //if not PO and has x (is a d frontier)
                 front.pb(mp(wire_sur[i][1], i));        // Gate on the right is a D frontier then, add to list
     }
     return front;
@@ -279,7 +290,7 @@ vector<pi> jFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
     rep(i, 0, tc[tc.size() - 1].size())
     {
         if(tc[tc.size() - 1][i] == '0' || tc[tc.size() - 1][i] == '1')      //if input present
-            if((wire_sur[i][2] != -1 || wire_sur[i][3] != -1) && (tc[tc.size() - 1][wire_sur[i][2]] == 'x' || tc[tc.size() - 1][wire_sur[i][3]] == 'x'))              //if not PI and has x (is a j frontier)
+            if((wire_sur[i][2] != -1 || wire_sur[i][3] != -1) && (tc[tc.size() - 1][wire_sur[i][2]] == 'x' && tc[tc.size() - 1][wire_sur[i][3]] == 'x'))              //if not PI and has x (is a j frontier)
                 front.pb(mp(wire_sur[i][0], i));        // Gate on the left is a J frontier then, add to list
     }
     return front;
@@ -288,7 +299,8 @@ vector<pi> jFrontier(vector<vector<char>> tc, vi nodetype, int wire_sur[][6])
 vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc[7][12][3], int wire_sur[][6])
 {
     // J Frontier
-    vector<pi> jfront = jFrontier(tc_new, nodetype, wire_sur);
+    vector<pi> jfront;
+    jfront = jFrontier(tc_new, nodetype, wire_sur);
     if(jfront.empty()){         // No frontier implies primary input
         return tc_new[tc_new.size() - 1];
     }
@@ -301,9 +313,9 @@ vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc
         vector<vector<char> > tmp_sc;
         rep(i, 0, 4){
             vector<char> sc_vector;
-            if(tcube_intersec(prop_dc[nodetype[gate]][i][0], tc_new[tc_new.size()-1][wire_sur[wire][2]]) != 'C'
-               && tcube_intersec(prop_dc[nodetype[gate]][i][1], tc_new[tc_new.size()-1][wire_sur[wire][3]]) != 'C'
-               && prop_dc[nodetype[gate]][i][2] == tc_new[tc_new.size() - 1][wire]){
+            if(tcube_intersec(prop_dc[nodetype[gate]][i][0], tc_new[tc_new.size()-1][wire_sur[wire][2]]) != 'C' &&
+               tcube_intersec(prop_dc[nodetype[gate]][i][1], tc_new[tc_new.size()-1][wire_sur[wire][3]]) != 'C' &&
+               prop_dc[nodetype[gate]][i][2] == tc_new[tc_new.size() - 1][wire]){
 
                     sc_vector = {tcube_intersec(prop_dc[nodetype[gate]][i][0], tc_new[tc_new.size()-1][wire_sur[wire][2]]),
                                  tcube_intersec(prop_dc[nodetype[gate]][i][1], tc_new[tc_new.size() - 1][wire_sur[wire][3]]),
@@ -351,6 +363,7 @@ vector<char> justifyFront(vector<vector<char>> tc_new, vi nodetype, char prop_dc
                 rep(i, 0, tc_new[tc_new.size() - 1].size()){
                     tc_vector.pb(tcube_intersec(tc_new[tc_new.size()-1][i], tc_new3[i]));
                 }
+                tc_new.pb(tc_vector);
             }
 
         }
@@ -367,17 +380,18 @@ vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, 
         rep(i, tc[tc.size() - 1].size() - nout, tc[tc.size() - 1].size())       //Check outputs if fault detected
         {
             if(tc[tc.size() - 1][i] == 'D' || tc[tc.size() - 1][i] == 'E')
-            {
                 flag = 1;               //Error detected
-                return tc[tc.size() - 1];
-            }
         }
-        return {'0'};                   //Error not detected
-    }       
+        if(!flag)
+            return {'0'};                   //Error not detected
+        else
+            return tc[tc.size() - 1];
+    }           
 
     // if d frontier not empty
     vector<vector<char>> tc_new;
     tc_new.pb(tc[tc.size() - 1]);
+    bool f1;
     for(auto x = dFront.begin(); x != dFront.end(); x++)
     {
         // Iterate through the dFrontiers, save pdc
@@ -398,8 +412,26 @@ vector<char> D_algorithm_branch(vector<vector<char>> tc, int nout, vi nodetype, 
             // Need to justify based on set values
             // Calling justify
             vector<char> jst = justifyFront(tc_new, nodetype, prop_dc, wire_sur);
+
+            if(jst.size() != 1)
+            {
+                tc_new.pb(jst);
+                f1 =1;
+                break;
+            }
         }
+        if(f1)
+            break;
     }
+    if(f1)
+    {
+        tc[tc.size()-1] = D_algorithm(tc_new, nout, nodetype, prop_dc, wire_sur, branch_sur);
+        tc.pb(tc[tc.size() - 1]);
+        return tc[tc.size() - 1];
+    }
+    else
+        return {'0'};
+    return {'0'};
 }
 
 
@@ -501,11 +533,11 @@ int main(void){
         cout << "Node " << i << " is of type " << nodetype[i] << endl;
     }
     char prop_dc[7][12][3] = {
-                                {{'0','0','0'},{'1','1','1'},{'x','x','x'},{'x','x','x'},{'0','0','E'},{'1','1','D'},{'x','x','x'},{'x','x','x'},{'D','D','D'},{'E','E','E'},{'x','x','x'},{'x','x','x'}},          // branch
-                                {{'0','x','0'},{'x','0','0'},{'1','1','1'},{'x','x','x'},{'1','1','D'},{'0','x','E'},{'x','0','E'},{'x','x','x'},{'E','1','E'},{'D','1','D'},{'x','x','x'},{'x','x','x'}},          // and
-                                {{'0','0','0'},{'x','1','1'},{'1','x','1'},{'x','x','x'},{'0','0','E'},{'x','1','D'},{'1','x','D'},{'x','x','x'},{'E','0','E'},{'D','0','D'},{'x','x','x'},{'x','x','x'}},          // or
-                                {{'0','x','1'},{'x','0','1'},{'1','1','0'},{'x','x','x'},{'1','1','E'},{'0','x','D'},{'x','0','D'},{'x','x','x'},{'E','1','D'},{'D','1','E'},{'x','x','x'},{'x','x','x'}},          // nand
-                                {{'0','0','1'},{'x','1','0'},{'1','x','0'},{'x','x','x'},{'0','0','D'},{'x','1','E'},{'1','x','E'},{'x','x','x'},{'E','0','D'},{'D','0','E'},{'x','x','x'},{'x','x','x'}},          // nor
+                                {{'0','0','0'},{'1','1','1'},{'N','N','N'},{'N','N','N'},{'0','0','E'},{'1','1','D'},{'N','N','N'},{'N','N','N'},{'D','D','D'},{'E','E','E'},{'N','N','N'},{'N','N','N'}},          // branch
+                                {{'0','x','0'},{'x','0','0'},{'1','1','1'},{'N','N','N'},{'1','1','D'},{'0','x','E'},{'x','0','E'},{'N','N','N'},{'E','1','E'},{'D','1','D'},{'N','N','N'},{'N','N','N'}},          // and
+                                {{'0','0','0'},{'x','1','1'},{'1','x','1'},{'N','N','N'},{'0','0','E'},{'x','1','D'},{'1','x','D'},{'N','N','N'},{'E','0','E'},{'D','0','D'},{'N','N','N'},{'N','N','N'}},          // or
+                                {{'0','x','1'},{'x','0','1'},{'1','1','0'},{'N','N','N'},{'1','1','E'},{'0','x','D'},{'x','0','D'},{'N','N','N'},{'E','1','D'},{'D','1','E'},{'N','N','N'},{'N','N','N'}},          // nand
+                                {{'0','0','1'},{'x','1','0'},{'1','x','0'},{'N','N','N'},{'0','0','D'},{'x','1','E'},{'1','x','E'},{'N','N','N'},{'E','0','D'},{'D','0','E'},{'N','N','N'},{'N','N','N'}},          // nor
                                 {{'0','0','0'},{'0','1','1'},{'1','0','1'},{'1','1','0'},{'0','1','D'},{'1','0','D'},{'0','0','E'},{'1','1','E'},{'E','0','E'},{'D','0','D'},{'D','1','E'},{'E','1','D'}},          // xor
                                 {{'0','0','1'},{'0','1','0'},{'1','0','0'},{'1','1','1'},{'0','0','D'},{'1','1','D'},{'0','1','E'},{'1','0','E'},{'E','0','D'},{'D','0','E'},{'D','1','D'},{'E','1','E'}}           //xnor
                              }; // 0 to 3 are no errors, 4 to 7 are error at output, 8 to 11 are error at input AND output
@@ -517,7 +549,7 @@ int main(void){
         int j;
         rep(j, 0, n_edge)
         {
-            cout << "Considering s-a-" << i << " for wire " << j << endl;
+            cout << "Considering s-a-" << i << " for wire " << j+50 << endl;
             fwire = j;
             char f_state = f_states[i];
 
@@ -528,27 +560,38 @@ int main(void){
             test_cube.pb(temp);
             test_cube.pb(test_cube[test_cube.size()-1]);
 
-           int wire_sur[n_edge][6];
-           // rep(k, 0, n_edge)
-           //     rep(l, 0, 6)
-           //         wire_sur[k][l] = 0;
+            int wire_sur[n_edge][6];
+            rep(k, 0, n_edge)
+                rep(l, 0, 6)
+                    wire_sur[k][l] = 0;
 
             rep(k, 0, n_edge) 
             {
-                getwire_sur(adj, n_node, 50+k, nodetype);
+                getwire_sur(adj, n_node, k, nodetype);
                 rep(l, 0, 6)
                     wire_sur[k][l] = def_wiresur[l];
             }
             vii branch_sur;
             rep(k, 0, n_edge)
-                if (nodetype[wire_sur[k][i]] == 1)          //is branch
+                if (nodetype[wire_sur[k][1]] == 0)          //is branch
                     branch_sur.pb(getbranch_sur(adj, n_node, k, wire_sur[k][1]));
 
             test_cube[test_cube.size()-1][fwire] = f_state; // Updating next state with fault from xxxxxx
             test_cube.pb(test_cube[test_cube.size() - 1]);  // New copy
             
+            rep(k, 4, 8)
+            {
+                if(prop_dc[nodetype[wire_sur[fwire][0]]][k][2] == test_cube[test_cube.size() - 1][fwire])
+                {
+                    test_cube[test_cube.size() - 1][wire_sur[fwire][2]] = prop_dc[nodetype[wire_sur[fwire][0]]][k][0];
+                    test_cube[test_cube.size() - 1][wire_sur[fwire][3]] = prop_dc[nodetype[wire_sur[fwire][0]]][k][1];
+                }
+            }
+
             // D Algorithm starts here
             int nout, nin;
+            nout = 0;
+            nin = 0;
             rep(k, 0, n_node)
             {
                 if (nodetype[k] == -1)

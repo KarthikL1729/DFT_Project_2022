@@ -8,70 +8,78 @@ Enter first connection in netlist format (node1 node2 wirenum):
 Enter first connection in netlist format (node1 node2 wirenum): 
 Enter first connection in netlist format (node1 node2 wirenum): 
 Enter the type of node for node0:
- 0: input/output
- 1: branching point
- 2: AND
- 3: OR
- 4:NAND
- 5:NOR
- 6:XOR
-Enter the type of node for node1:
- 0: input/output
- 1: branching point
- 2: AND
- 3: OR
- 4:NAND
- 5:NOR
- 6:XOR
-Enter the type of node for node2:
- 0: input/output
- 1: branching point
- 2: AND
- 3: OR
- 4:NAND
- 5:NOR
- 6:XOR
-Enter the type of node for node3:
- 0: input/output
- 1: branching point
- 2: AND
- 3: OR
- 4:NAND
- 5:NOR
- 6:XOR
-Enter the type of node for node4:
- 0: input/output
- 1: branching point
- 2: AND
- 3: OR
- 4:NAND
- 5:NOR
- 6:XOR
-Enter the type of node for node5:
- 0: input/output
- 1: branching point
- 2: AND
- 3: OR
- 4:NAND
- 5:NOR
- 6:XOR
-Enter the type of node for node6:
- 0: input/output
- 1: branching point
- 2: AND
- 3: OR
- 4:NAND
- 5:NOR
- 6:XOR
-Enter the type of node for node7:
- 0: input/output
- 1: branching point
- 2: AND
- 3: OR
- 4:NAND
- 5:NOR
- 6:XOR
-0 -> 4 50 ;
+ -2: input
+ -1: output
+ 0: branching point
+ 1: AND
+ 2: OR
+ 3:NAND
+ 4:NOR
+ 5:XOR
+ 6:XNOREnter the type of node for node1:
+ -2: input
+ -1: output
+ 0: branching point
+ 1: AND
+ 2: OR
+ 3:NAND
+ 4:NOR
+ 5:XOR
+ 6:XNOREnter the type of node for node2:
+ -2: input
+ -1: output
+ 0: branching point
+ 1: AND
+ 2: OR
+ 3:NAND
+ 4:NOR
+ 5:XOR
+ 6:XNOREnter the type of node for node3:
+ -2: input
+ -1: output
+ 0: branching point
+ 1: AND
+ 2: OR
+ 3:NAND
+ 4:NOR
+ 5:XOR
+ 6:XNOREnter the type of node for node4:
+ -2: input
+ -1: output
+ 0: branching point
+ 1: AND
+ 2: OR
+ 3:NAND
+ 4:NOR
+ 5:XOR
+ 6:XNOREnter the type of node for node5:
+ -2: input
+ -1: output
+ 0: branching point
+ 1: AND
+ 2: OR
+ 3:NAND
+ 4:NOR
+ 5:XOR
+ 6:XNOREnter the type of node for node6:
+ -2: input
+ -1: output
+ 0: branching point
+ 1: AND
+ 2: OR
+ 3:NAND
+ 4:NOR
+ 5:XOR
+ 6:XNOREnter the type of node for node7:
+ -2: input
+ -1: output
+ 0: branching point
+ 1: AND
+ 2: OR
+ 3:NAND
+ 4:NOR
+ 5:XOR
+ 6:XNOR0 -> 4 50 ;
 1 -> 4 51 ;
 2 -> 5 52 ;
 3 -> 5 53 ;
@@ -79,11 +87,67 @@ Enter the type of node for node7:
 5 -> 6 55 ;
 6 -> 7 56 ;
 7 -> 
-Node 0 is of type 0
-Node 1 is of type 0
-Node 2 is of type 0
-Node 3 is of type 0
-Node 4 is of type 6
-Node 5 is of type 6
-Node 6 is of type 2
-Node 7 is of type 0
+Node 0 is of type -2
+Node 1 is of type -2
+Node 2 is of type -2
+Node 3 is of type -2
+Node 4 is of type 5
+Node 5 is of type 5
+Node 6 is of type 1
+Node 7 is of type -1
+Considering s-a-0 for wire 50
+Fault Untestable
+
+Path (Format: Edge-[Node]): 50-[4]
+Considering s-a-0 for wire 51
+Fault Untestable
+
+Path (Format: Edge-[Node]): 51-[4]
+Considering s-a-0 for wire 52
+Fault Untestable
+
+Path (Format: Edge-[Node]): 52-[5]
+Considering s-a-0 for wire 53
+Fault Untestable
+
+Path (Format: Edge-[Node]): 53-[5]
+Considering s-a-0 for wire 54
+Fault Untestable
+
+Path (Format: Edge-[Node]): 54-[6]
+Considering s-a-0 for wire 55
+Fault Untestable
+
+Path (Format: Edge-[Node]): 55-[6]
+Considering s-a-0 for wire 56
+Test Complete
+Test Vector: x x x x 
+Path (Format: Edge-[Node]): 56-[7]
+Considering s-a-1 for wire 50
+Fault Untestable
+
+Path (Format: Edge-[Node]): 50-[4]
+Considering s-a-1 for wire 51
+Fault Untestable
+
+Path (Format: Edge-[Node]): 51-[4]
+Considering s-a-1 for wire 52
+Fault Untestable
+
+Path (Format: Edge-[Node]): 52-[5]
+Considering s-a-1 for wire 53
+Fault Untestable
+
+Path (Format: Edge-[Node]): 53-[5]
+Considering s-a-1 for wire 54
+Fault Untestable
+
+Path (Format: Edge-[Node]): 54-[6]
+Considering s-a-1 for wire 55
+Fault Untestable
+
+Path (Format: Edge-[Node]): 55-[6]
+Considering s-a-1 for wire 56
+Test Complete
+Test Vector: x x x x 
+Path (Format: Edge-[Node]): 56-[7]
